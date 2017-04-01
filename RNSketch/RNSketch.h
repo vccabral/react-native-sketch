@@ -16,5 +16,7 @@
 - (void)setFillColor:(UIColor *)fillColor;
 - (void)setStrokeColor:(UIColor *)strokeColor;
 - (void)setImageFromFile:(NSString *)pathToFile;
+- (void)setClearButtonHidden:(BOOL)hidden;
+- (void)clearDrawing;
 
 @end

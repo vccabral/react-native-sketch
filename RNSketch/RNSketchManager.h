@@ -7,6 +7,7 @@
 //
 
 #import "RCTViewManager.h"
+#import "RNSketch.h"
 
 @interface RNSketchManager : RCTViewManager
 
@@ -14,5 +15,6 @@
 @property (nonatomic, strong) UIColor *strokeColor;
 @property (nonatomic, strong) NSString *imageFilePath;
 @property (nonatomic, assign) NSInteger strokeThickness;
+@property (strong) RNSketch *sketchView;
 
 @end;

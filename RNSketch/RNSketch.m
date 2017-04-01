@@ -37,10 +37,11 @@
   if ((self = [super init])) {
     // Internal setup
     self.multipleTouchEnabled = NO;
+    // For borderRadius property to work (CALayer's cornerRadius).
+    self.layer.masksToBounds = YES;
     _eventDispatcher = eventDispatcher;
     _path = [UIBezierPath bezierPath];
 
-    // TODO: Find a way to get an functionnal external 'clear button'
     [self initClearButton];
   }
 
@@ -51,6 +52,11 @@
 {
   [super layoutSubviews];
   [self drawBitmap];
+}
+
+- (void)setClearButtonHidden:(BOOL)hidden
+{
+  _clearButton.hidden = hidden;
 }
 
 
