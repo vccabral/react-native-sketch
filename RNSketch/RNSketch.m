@@ -80,7 +80,7 @@
 
   // Add subviews
   [self addSubview:background];
-  [self addSubview:_clearButton];
+  // [self addSubview:_clearButton];
 }
 
 
