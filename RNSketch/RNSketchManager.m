@@ -101,11 +101,4 @@ RCT_EXPORT_METHOD(clear)
   });
 }
 
-RCT_EXPORT_METHOD(score)
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        return 0;
-    });
-}
-
 @end
