@@ -17,6 +17,6 @@
 - (void)setStrokeColor:(UIColor *)strokeColor;
 - (void)setClearButtonHidden:(BOOL)hidden;
 - (void)clearDrawing;
-- (int)getScore;
+- (int)score;
 
 @end

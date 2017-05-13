@@ -208,9 +208,9 @@
 }
 
 
-- (int)getScore
+- (int)score
 {
-    return 0
+    return 0;
 }
 
 #pragma mark - Setters
