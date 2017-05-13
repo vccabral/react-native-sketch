@@ -94,7 +94,7 @@ RCT_EXPORT_METHOD(saveImage:(NSString *)encodedImage
   resolve(@{@"path": fullPath});
 }
 
-RCT_EXPORT_METHOD(clear)
+RCT_EXPORT_METHOD(clear2)
 {
   dispatch_async(dispatch_get_main_queue(), ^{
     [self.sketchView clearDrawing];
