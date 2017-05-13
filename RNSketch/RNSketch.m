@@ -208,6 +208,11 @@
 }
 
 
+- (int)getScore
+{
+    return 0
+}
+
 #pragma mark - Setters
 
 

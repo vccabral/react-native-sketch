@@ -101,4 +101,11 @@ RCT_EXPORT_METHOD(clear)
   });
 }
 
+RCT_EXPORT_METHOD(get_score)
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.sketchView getScore];
+    });
+}
+
 @end
