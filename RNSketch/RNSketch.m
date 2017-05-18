@@ -43,7 +43,7 @@
 
     [self initClearButton];
   }
-
+    
   return self;
 }
 
@@ -73,11 +73,11 @@
   _clearButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
   [_clearButton setTitle:@"x" forState:UIControlStateNormal];
   [_clearButton addTarget:self action:@selector(clearDrawing) forControlEvents:UIControlEventTouchUpInside];
-
+    
   // Clear button background
   UIButton *background = [UIButton buttonWithType:UIButtonTypeCustom];
   background.frame = frame;
-
+    
   // Add subviews
   [self addSubview:background];
   // [self addSubview:_clearButton];
@@ -99,7 +99,7 @@
   _counter++;
   UITouch *touch = [touches anyObject];
   _points[_counter] = [touch locationInView:self];
-
+    
   if (_counter == 4) [self drawCurve];
 }
 
@@ -107,18 +107,18 @@
 {
   // Enabling to clear
   [_clearButton setEnabled:true];
-
+    
   [self drawBitmap];
   [self setNeedsDisplay];
-
-  [_path removeAllPoints];
+    
+  //  [_path removeAllPoints];
   _counter = 0;
-
+    
   // Send event
   NSDictionary *bodyEvent = @{
-                              @"target": self.reactTag,
-                              @"image": [self drawingToString],
-                              };
+                            @"target": self.reactTag,
+                            @"image": [self drawingToString],
+                            };
   [_eventDispatcher sendInputEventWithName:@"topChange" body:bodyEvent];
 }
 
@@ -146,12 +146,12 @@
 {
   // Move the endpoint to the middle of the line
   _points[3] = CGPointMake((_points[2].x + _points[4].x) / 2, (_points[2].y + _points[4].y) / 2);
-
+    
   [_path moveToPoint:_points[0]];
   [_path addCurveToPoint:_points[3] controlPoint1:_points[1] controlPoint2:_points[2]];
-
+    
   [self setNeedsDisplay];
-
+    
   // Replace points and get ready to handle the next segment
   _points[0] = _points[3];
   _points[1] = _points[4];
@@ -161,19 +161,19 @@
 - (void)drawBitmap
 {
   UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, 0);
-
+    
   // If first time, paint background
   if (!_image) {
     [_fillColor setFill];
     [[UIBezierPath bezierPathWithRect:self.bounds] fill];
   }
-
+    
   // Draw with context
   [_image drawAtPoint:CGPointZero];
   [_strokeColor setStroke];
   [_path stroke];
   _image = UIGraphicsGetImageFromCurrentImageContext();
-
+    
   UIGraphicsEndImageContext();
 }
 
@@ -186,7 +186,6 @@
   return [UIImagePNGRepresentation(_image) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 }
 
-
 #pragma mark - Clear drawing
 
 
@@ -194,12 +193,12 @@
 {
   // Disabling to clear
   [_clearButton setEnabled:false];
-
+    
   _image = nil;
-
+    
   [self drawBitmap];
   [self setNeedsDisplay];
-
+    
   // Send event
   NSDictionary *bodyEvent = @{
                               @"target": self.reactTag,
@@ -207,11 +206,6 @@
   [_eventDispatcher sendInputEventWithName:@"onReset" body:bodyEvent];
 }
 
-
-- (int)score
-{
-    return 0;
-}
 
 #pragma mark - Setters
 
@@ -231,4 +225,13 @@
   _path.lineWidth = strokeThickness;
 }
 
+
+- (int)grab_score{
+    
+    //    NSMutableArray *elements = [NSMutableArray array];
+    //    CGPathApply(_path.CGPath, (__bridge void *)elements, getBezierElements);
+    //    return elements;
+    
+    return 123;
+}
 @end
