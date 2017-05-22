@@ -68,6 +68,10 @@ export default class Sketch extends React.Component {
     return SketchManager.clear();
   }
 
+  score() {
+    return Math.random()*1000;
+  }
+
   render() {
     return (
       <RNSketch

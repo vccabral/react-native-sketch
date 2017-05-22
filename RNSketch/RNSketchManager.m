@@ -69,7 +69,6 @@ RCT_EXPORT_VIEW_PROPERTY(strokeThickness, NSInteger)
 
 #pragma mark - Exported methods
 
-
 RCT_EXPORT_METHOD(saveImage:(NSString *)encodedImage
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
@@ -99,6 +98,14 @@ RCT_EXPORT_METHOD(clear)
   dispatch_async(dispatch_get_main_queue(), ^{
     [self.sketchView clearDrawing];
   });
+}
+
+RCT_EXPORT_METHOD(get_points:(RCTResponseSenderBlock)callback) {
+    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+    
+    [dictionary setValue:[NSNumber numberWithInt:5] forKey:@"age"];
+
+    callback(@[[NSNull null],dictionary]);
 }
 
 @end

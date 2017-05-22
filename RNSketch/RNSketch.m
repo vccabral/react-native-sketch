@@ -18,6 +18,7 @@
   RCTEventDispatcher *_eventDispatcher;
   UIButton *_clearButton;
   UIBezierPath *_path;
+  NSArray *bezierPointsArray; //added as global variable to track all points
   UIImage *_image;
   CGPoint _points[5];
   uint _counter;
@@ -110,7 +111,9 @@
 
   [self drawBitmap];
   [self setNeedsDisplay];
-
+    //get all points before removing the path
+    bezierPointsArray = [self getAllPoints];
+    
   [_path removeAllPoints];
   _counter = 0;
 
@@ -178,6 +181,49 @@
 }
 
 
+- (NSMutableArray *) getAllPoints
+{
+    //_path
+    NSMutableArray *points = [NSMutableArray array];
+    CGPathApply(_path.CGPath, (__bridge void *)points, getPointsFromBezier);
+    
+    return points;
+}
+
+
+
+void getPointsFromBezier (void *info, const CGPathElement *element)
+{
+    NSMutableArray *bezierPoints = (__bridge NSMutableArray *)info;
+    
+    CGPoint *points = element->points;
+    CGPathElementType type = element->type;
+    
+    switch(type) {
+        case kCGPathElementMoveToPoint: // contains 1 point
+            [bezierPoints addObject:[NSValue valueWithCGPoint:points[0]]];
+            break;
+            
+        case kCGPathElementAddLineToPoint: // contains 1 point
+            [bezierPoints addObject:[NSValue valueWithCGPoint:points[0]]];
+            break;
+            
+        case kCGPathElementAddQuadCurveToPoint: // contains 2 points
+            [bezierPoints addObject:[NSValue valueWithCGPoint:points[0]]];
+            [bezierPoints addObject:[NSValue valueWithCGPoint:points[1]]];
+            break;
+            
+        case kCGPathElementAddCurveToPoint: // contains 3 points
+            [bezierPoints addObject:[NSValue valueWithCGPoint:points[0]]];
+            [bezierPoints addObject:[NSValue valueWithCGPoint:points[1]]];
+            [bezierPoints addObject:[NSValue valueWithCGPoint:points[2]]];
+            break;
+            
+        case kCGPathElementCloseSubpath: // contains no point
+            break;
+    }
+}
+
 #pragma mark - Export drawing
 
 
@@ -207,6 +253,11 @@
   [_eventDispatcher sendInputEventWithName:@"onReset" body:bodyEvent];
 }
 
+
+- (int)score
+{
+    return 0;
+}
 
 #pragma mark - Setters
 
