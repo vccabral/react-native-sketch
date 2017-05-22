@@ -200,33 +200,37 @@ void getPointsFromBezier (void *info, const CGPathElement *element)
     
     CGPoint *points = element->points;
     CGPathElementType type = element->type;
-    NSMutableDictionary *pointsDictionary = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *p0 = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *p1 = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *p2 = [[NSMutableDictionary alloc] init];
     switch(type) {
         case kCGPathElementMoveToPoint:
+        case kCGPathElementAddLineToPoint:
              kCGPathElementAddLineToPoint:
-            {// contains 1 point
-            
-                [pointsDictionary setValue:[[NSNumber alloc] initWithFloat:points[0].x] forKey:@"x"];
-                [pointsDictionary setValue:[[NSNumber alloc] initWithFloat:points[0].y] forKey:@"y"];
-            
-                [bezierPoints addObject:pointsDictionary];
-            }
+            [p0 setValue:[[NSNumber alloc] initWithFloat:points[0].x] forKey:@"x"];
+            [p0 setValue:[[NSNumber alloc] initWithFloat:points[0].y] forKey:@"y"];
+            [bezierPoints addObject:p0];
             break;
-//            
-//        case kCGPathElementAddLineToPoint: // contains 1 point
-//            [bezierPoints addObject:[NSValue valueWithCGPoint:points[0]]];
-//            break;
-            
-//        case kCGPathElementAddQuadCurveToPoint: // contains 2 points
-//            [bezierPoints addObject:[NSValue valueWithCGPoint:points[0]]];
-//            [bezierPoints addObject:[NSValue valueWithCGPoint:points[1]]];
-//            break;
-//            
-//        case kCGPathElementAddCurveToPoint: // contains 3 points
-//            [bezierPoints addObject:[NSValue valueWithCGPoint:points[0]]];
-//            [bezierPoints addObject:[NSValue valueWithCGPoint:points[1]]];
-//            [bezierPoints addObject:[NSValue valueWithCGPoint:points[2]]];
-//            break;
+       case kCGPathElementAddQuadCurveToPoint: // contains 2 points
+            [p0 setValue:[[NSNumber alloc] initWithFloat:points[0].x] forKey:@"x"];
+            [p0 setValue:[[NSNumber alloc] initWithFloat:points[0].y] forKey:@"y"];
+            [bezierPoints addObject:p0];
+            [p1 setValue:[[NSNumber alloc] initWithFloat:points[1].x] forKey:@"x"];
+            [p1 setValue:[[NSNumber alloc] initWithFloat:points[1].y] forKey:@"y"];
+            [bezierPoints addObject:p1];
+           break;
+           
+       case kCGPathElementAddCurveToPoint: // contains 3 points
+            [p0 setValue:[[NSNumber alloc] initWithFloat:points[0].x] forKey:@"x"];
+            [p0 setValue:[[NSNumber alloc] initWithFloat:points[0].y] forKey:@"y"];
+            [bezierPoints addObject:p0];
+            [p1 setValue:[[NSNumber alloc] initWithFloat:points[1].x] forKey:@"x"];
+            [p1 setValue:[[NSNumber alloc] initWithFloat:points[1].y] forKey:@"y"];
+            [bezierPoints addObject:p1];
+            [p2 setValue:[[NSNumber alloc] initWithFloat:points[2].x] forKey:@"x"];
+            [p2 setValue:[[NSNumber alloc] initWithFloat:points[2].y] forKey:@"y"];
+            [bezierPoints addObject:p2];
+           break;
             
         case kCGPathElementCloseSubpath: // contains no point
             break;
