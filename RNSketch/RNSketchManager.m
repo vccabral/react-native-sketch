@@ -101,11 +101,7 @@ RCT_EXPORT_METHOD(clear)
 }
 
 RCT_EXPORT_METHOD(get_points:(RCTResponseSenderBlock)callback) {
-    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
-    
-    [dictionary setValue:[NSNumber numberWithInt:5] forKey:@"age"];
-
-    callback(@[[NSNull null],dictionary]);
+    callback(@[[NSNull null],[self.sketchView getAllPoints]]);
 }
 
 @end
