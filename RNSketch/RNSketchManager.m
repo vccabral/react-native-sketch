@@ -104,7 +104,11 @@ RCT_EXPORT_METHOD(get_points:(RCTResponseSenderBlock)callback) {
     
     NSArray *bezierPointsArray = [self.sketchView getBezierPointsArray];
     
-    callback(@[[NSNull null],bezierPointsArray]);
+    if ([bezierPointsArray count] > 0){
+        callback(@[[NSNull null],bezierPointsArray]);
+    }else{
+        callback(@[[NSNull null]]);
+    }
 }
 
 @end
