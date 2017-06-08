@@ -17,6 +17,7 @@
 - (void)setStrokeColor:(UIColor *)strokeColor;
 - (void)setClearButtonHidden:(BOOL)hidden;
 - (void)clearDrawing;
+- (void)makeSpiral;
 - (NSArray *) getBezierPointsArray;
 
 @end

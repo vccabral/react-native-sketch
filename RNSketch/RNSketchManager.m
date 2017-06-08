@@ -6,9 +6,9 @@
 //  Copyright © 2016 Jeremy Grancher. All rights reserved.
 //
 
-#import <React/RCTEventDispatcher.h>
-#import <React/RCTView.h>
-#import <React/UIView+React.h>
+#import "RCTEventDispatcher.h"
+#import "RCTView.h"
+#import "UIView+React.h"
 #import "RNSketch.h"
 #import "RNSketchManager.h"
 
@@ -97,6 +97,13 @@ RCT_EXPORT_METHOD(clear)
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.sketchView clearDrawing];
+    });
+}
+
+RCT_EXPORT_METHOD(makeSpiral)
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.sketchView makeSpiral];
     });
 }
 

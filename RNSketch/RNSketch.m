@@ -6,9 +6,9 @@
 //  Copyright © 2016 Jeremy Grancher. All rights reserved.
 //
 
-#import <React/RCTEventDispatcher.h>
-#import <React/RCTView.h>
-#import <React/UIView+React.h>
+#import "RCTEventDispatcher.h"
+#import "RCTView.h"
+#import "UIView+React.h"
 #import "RNSketch.h"
 #import "RNSketchManager.h"
 
@@ -266,6 +266,11 @@ void getPointsFromBezier (void *info, const CGPathElement *element)
     [_eventDispatcher sendInputEventWithName:@"onReset" body:bodyEvent];
 }
 
+- (void)makeSpiral
+{
+    self->_points[0] = CGPointMake(300, 250);
+    [self drawCurve];
+}
 
 - (int)score
 {
