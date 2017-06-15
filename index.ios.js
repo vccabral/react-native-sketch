@@ -68,8 +68,8 @@ export default class Sketch extends React.Component {
     return SketchManager.clear();
   }
 
-  get_points() {
-    return SketchManager.get_points();
+  get_points(handler) {
+    return SketchManager.get_points(handler);
   }
 
   render() {
