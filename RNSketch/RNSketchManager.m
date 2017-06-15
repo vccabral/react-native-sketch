@@ -6,9 +6,9 @@
 //  Copyright © 2016 Jeremy Grancher. All rights reserved.
 //
 
-#import "RCTEventDispatcher.h"
-#import "RCTView.h"
-#import "UIView+React.h"
+#import <React/RCTEventDispatcher.h>
+#import <React/RCTView.h>
+#import <React/UIView+React.h>
 #import "RNSketch.h"
 #import "RNSketchManager.h"
 
@@ -100,18 +100,24 @@ RCT_EXPORT_METHOD(clear)
     });
 }
 
-RCT_EXPORT_METHOD(makeSpiral)
+RCT_EXPORT_METHOD(makeSpiral: (double)half_spirals :(int)spiral_segments :(double)a)
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.sketchView makeSpiral];
+        [self.sketchView makeSpiral:half_spirals : spiral_segments :a];
     });
 }
+
+
 
 RCT_EXPORT_METHOD(get_points:(RCTResponseSenderBlock)callback) {
     
     NSArray *bezierPointsArray = [self.sketchView getBezierPointsArray];
     
-    callback(@[[NSNull null],bezierPointsArray]);
+    if ([bezierPointsArray count] > 0){
+        callback(@[[NSNull null],bezierPointsArray]);
+    }else{
+        callback(@[[NSNull null]]);
+    }
 }
 
 @end

@@ -6,11 +6,12 @@
 //  Copyright © 2016 Jeremy Grancher. All rights reserved.
 //
 
-#import "RCTEventDispatcher.h"
-#import "RCTView.h"
-#import "UIView+React.h"
+#import <React/RCTEventDispatcher.h>
+#import <React/RCTView.h>
+#import <React/UIView+React.h>
 #import "RNSketch.h"
 #import "RNSketchManager.h"
+#include <math.h>
 
 @implementation RNSketch
 {
@@ -19,6 +20,7 @@
     UIButton *_clearButton;
     UIBezierPath *_path;
     NSArray *bezierPointsArray; //added as global variable to track all points
+    NSMutableArray *touchEvents;
     UIImage *_image;
     CGPoint _points[5];
     uint _counter;
@@ -113,7 +115,7 @@
     [self setNeedsDisplay];
     //get all points before removing the path
     bezierPointsArray = [self getAllPoints];
-    
+    [touchEvents addObject:bezierPointsArray];
     [_path removeAllPoints];
     _counter = 0;
     
@@ -191,7 +193,7 @@
 }
 
 - (NSArray * ) getBezierPointsArray{
-    return bezierPointsArray;
+    return touchEvents;
 }
 
 void getPointsFromBezier (void *info, const CGPathElement *element)
@@ -206,21 +208,21 @@ void getPointsFromBezier (void *info, const CGPathElement *element)
     switch(type) {
         case kCGPathElementMoveToPoint:
         case kCGPathElementAddLineToPoint:
-             kCGPathElementAddLineToPoint:
+        kCGPathElementAddLineToPoint:
             [p0 setValue:[[NSNumber alloc] initWithFloat:points[0].x] forKey:@"x"];
             [p0 setValue:[[NSNumber alloc] initWithFloat:points[0].y] forKey:@"y"];
             [bezierPoints addObject:p0];
             break;
-       case kCGPathElementAddQuadCurveToPoint: // contains 2 points
+        case kCGPathElementAddQuadCurveToPoint: // contains 2 points
             [p0 setValue:[[NSNumber alloc] initWithFloat:points[0].x] forKey:@"x"];
             [p0 setValue:[[NSNumber alloc] initWithFloat:points[0].y] forKey:@"y"];
             [bezierPoints addObject:p0];
             [p1 setValue:[[NSNumber alloc] initWithFloat:points[1].x] forKey:@"x"];
             [p1 setValue:[[NSNumber alloc] initWithFloat:points[1].y] forKey:@"y"];
             [bezierPoints addObject:p1];
-           break;
-           
-       case kCGPathElementAddCurveToPoint: // contains 3 points
+            break;
+            
+        case kCGPathElementAddCurveToPoint: // contains 3 points
             [p0 setValue:[[NSNumber alloc] initWithFloat:points[0].x] forKey:@"x"];
             [p0 setValue:[[NSNumber alloc] initWithFloat:points[0].y] forKey:@"y"];
             [bezierPoints addObject:p0];
@@ -230,7 +232,7 @@ void getPointsFromBezier (void *info, const CGPathElement *element)
             [p2 setValue:[[NSNumber alloc] initWithFloat:points[2].x] forKey:@"x"];
             [p2 setValue:[[NSNumber alloc] initWithFloat:points[2].y] forKey:@"y"];
             [bezierPoints addObject:p2];
-           break;
+            break;
             
         case kCGPathElementCloseSubpath: // contains no point
             break;
@@ -264,18 +266,45 @@ void getPointsFromBezier (void *info, const CGPathElement *element)
                                 @"target": self.reactTag,
                                 };
     [_eventDispatcher sendInputEventWithName:@"onReset" body:bodyEvent];
+    
+    bezierPointsArray = [NSMutableArray array];
+    touchEvents = [NSMutableArray array];
 }
 
-- (void)makeSpiral
-{
-    self->_points[0] = CGPointMake(300, 250);
-    [self drawCurve];
-}
 
 - (int)score
 {
     return 0;
 }
+
+CGPoint get_cgpoint_from_theta_a (double theta, double a, double x_center, double y_center)
+{
+    double x = - a * cos(theta) * theta;
+    double y = a * sin(theta) * theta;
+    return CGPointMake(x+x_center, y+y_center);
+}
+
+- (void)makeSpiral:(double)half_spirals :(int)spiral_segments :(double)a
+{
+    double radian_max = M_PI * half_spirals;
+    double r_max = a * radian_max;
+    NSLog(@"%f and %f", radian_max, r_max);
+    int x_center = 341;
+    int y_center = 242;
+    int points_per_drawing = 5;
+    
+    for (int i = 0; i <= spiral_segments-points_per_drawing; i=i+points_per_drawing)
+    {
+        for(int j=0; j<points_per_drawing;j++){
+            double r = ((i+j)*1.0/spiral_segments)*r_max;
+            double theta = r/a;
+            NSLog(@"%f and %f", r, theta);
+            self->_points[j] = get_cgpoint_from_theta_a(theta, a, x_center, y_center);
+        }
+        [self drawCurve];
+    }
+}
+
 
 #pragma mark - Setters
 
