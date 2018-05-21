@@ -5,8 +5,8 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-
-const { func, number, string, bool } = React.PropTypes;
+import PropTypes from 'prop-types';
+const { func, number, string, bool } = PropTypes;
 
 const SketchManager = NativeModules.RNSketchManager || {};
 const BASE_64_CODE = 'data:image/jpg;base64,';
