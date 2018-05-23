@@ -100,6 +100,15 @@ RCT_EXPORT_METHOD(clear)
     });
 }
 
+RCT_EXPORT_METHOD(makeSpiral: (double)half_spirals :(int)spiral_segments :(double)a)
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.sketchView makeSpiral:half_spirals : spiral_segments :a];
+    });
+}
+
+
+
 RCT_EXPORT_METHOD(get_points:(RCTResponseSenderBlock)callback) {
     
     NSArray *bezierPointsArray = [self.sketchView getBezierPointsArray];
